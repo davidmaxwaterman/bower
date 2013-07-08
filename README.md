@@ -120,7 +120,7 @@ Main resolve coordinator.
 
 `Manager(config, logger)`
 
-The `config` to be used.   
+The `config` to be used.
 The `logger` to print logs to.
 
 ##### Public methods
@@ -135,13 +135,13 @@ Configures the manager. Setup is an object with:
 - `incompatibles`: array of decomposed endpoints that are known to be incompatible
 - `resolutions`: object of resolutions to be used on conflicts
 
-By default, `resolved` packages are also interpreted as installed.   
-When a package is resolved, all its associated incompatible packages will also be fetched.   
+By default, `resolved` packages are also interpreted as installed.
+When a package is resolved, all its associated incompatible packages will also be fetched.
 
 All decomposed endpoints might contain a `dependants` key that will be used to display additional information
-on conflicts.    
+on conflicts.
 The `resolved` endpoints should contain the `package meta` and `canonical dir` information set.
-An additional `unresolvable` key with a true value will cause a conflict to occur even if a resolution is set.   
+An additional `unresolvable` key with a true value will cause a conflict to occur even if a resolution is set.
 The `resolutions` object will be updated as necessary.
 
 If the Manager is already working, the promise is immediately rejected.
@@ -175,7 +175,7 @@ Abstraction to the underlying complexity of heterogeneous source types
 
 `PackageRepository(config, logger)`
 
-The `config` to be used.   
+The `config` to be used.
 The `logger` to print logs to.
 
 ##### Public methods
@@ -186,12 +186,12 @@ Fetches and endpoint, returning a promise of a `canonical dir`.
 
 `PackageRepository#versions(source)`: Promise
 
-Retrieves the semver versions available for a given `source`.   
+Retrieves the semver versions available for a given `source`.
 Return a promise of an array of semver versions.
 
 `PackageRepository#eliminate(source, version)`: Promise
 
-Eliminates entry with given `source` and `version` from the repository.   
+Eliminates entry with given `source` and `version` from the repository.
 Note that `version` can be empty because some `canonical dir`s do not have a version associated.
 In that case, only the unversioned entry will be removed.
 
@@ -201,7 +201,7 @@ Clears the entire repository.
 
 `PackageRepository#list()`: Promise
 
-List the entries of the cache.   
+List the entries of the cache.
 Return a promise of an array of `package meta`s.
 
 
@@ -213,8 +213,8 @@ Simple function that takes a `decomposed endpoint` and creates an instance of a 
 function createResolver(decEndpoint, registryClient, config) -> Promise
 ```
 
-The function is async to allow querying the Bower registry, etc.   
-The `registryClient` is an instance of [RegistryClient](https://github.com/bower/registry-client) to be used. If null, the registry won't be queried.   
+The function is async to allow querying the Bower registry, etc.
+The `registryClient` is an instance of [RegistryClient](https://github.com/bower/registry-client) to be used. If null, the registry won't be queried.
 
 
 #### ResolveCache
@@ -231,22 +231,22 @@ The cache, stored in disk, of resolved packages (canonical dirs).
 
 `ResolveCache#retrieve(source, target)`: Promise
 
-Retrieves `canonical dir` for a given `source` and `target` (optional, defaults to `*`).   
+Retrieves `canonical dir` for a given `source` and `target` (optional, defaults to `*`).
 The promise is resolved with both the `canonical dir` and `package meta`.
 
 `ResolveCache#versions(source)`: Promise
 
-Retrieves the semver versions available for a given `source`.   
+Retrieves the semver versions available for a given `source`.
 Return a promise of an array of semver versions.
 
 `ResolveCache#store(canonicalPackage, pkgMeta)`: Promise
 
-Stores `canonical dir` into the cache.   
+Stores `canonical dir` into the cache.
 The `pkgMeta` is optional and will be read if not passed.
 
 `ResolveCache#eliminate(source, version)`: Promise
 
-Eliminates entry with given `source` and `version` from the cache.   
+Eliminates entry with given `source` and `version` from the cache.
 Note that `version` can be empty because some `canonical dir`s do not have a version associated.
 In that case, only the unversioned entry will be removed.
 
@@ -256,7 +256,7 @@ Clear the entire cache.
 
 `ResolveCache#list()`: Promise
 
-List the entries of the cache.   
+List the entries of the cache.
 Return a promise of an array of `package meta`s.
 
 
@@ -337,8 +337,8 @@ Throws an error if the resolver is not yet resolved.
 
 `Resolver#versions(source)`: Promise
 
-Retrieves the semver versions available for a given `source`.   
-Return a promise of an array of semver versions.   
+Retrieves the semver versions available for a given `source`.
+Return a promise of an array of semver versions.
 By default this function resolves to an empty array.
 
 `Resolver#clearRuntimeCache()`
@@ -354,7 +354,7 @@ By default this function is a no-op.
 
 `Resolver#_hasNew(pkgMeta, canonicalDir)`: Promise
 
-The process of checking for a newer version. This function should be as fast as possible.  
+The process of checking for a newer version. This function should be as fast as possible.
 Concrete resolvers are encouraged to rewrite this function since the default implementation resolves to `true`.
 
 `Resolver#_createTempDir()`: Promise
