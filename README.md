@@ -85,11 +85,11 @@ Here's an overview of the dependency resolve process:
 
 4. **FABRICATE RESOLVERS** - For each of the endpoints, the `PackageRepository` requests the `ResolverFactory` for suitable resolvers, capable of handling the source type. Some considerations:
     - This method is asynchronous, in order to allow for I/O operations to happen, without blocking the whole process (e.g., querying registry, etc).
-    - There is a runtime internal cache of sources that have already been analysed, and what type of `Resolver` resulted from that analysis. This speeds up the decision process, particularly for aliases (registered packages), and published packages, which would required HTTP requests.
+    - There is a runtime internal cache of sources that have already been analysed, and what type of `Resolver` resulted from that analysis. This speeds up the decision process, particularly for aliases (registered packages), and published packages, which would require HTTP requests.
 
 5. **LOOKUP CACHE** - `PackageRepository` looks up the `ResolveCache` using the endpoint, for a cached `canonical dir` that complies to the endpoint target. Some considerations:
     - The lookup is performed using an endpoint that is fetched from the `Resolver`. This allows the resolver to guarantee that the endpoint has been normalised (twitter/bootstrap -> git://github.com/twitter/bootstrap.git, etc).
-    - The `ResolveCache` is `semver` aware. What this means, is that if you try to lookup `~1.2.1`, and the cache has a entries for versions `1.2.3` and `1.2.4`, it will give a hit with `1.2.4`.
+    - The `ResolveCache` is `semver` aware. What this means, is that if you try to lookup `~1.2.1`, and the cache has entries for versions `1.2.3` and `1.2.4`, it will give a hit with `1.2.4`.
 
 6. **CACHE HIT VALIDATION** - At this stage, and only for the cache hits, the `PackageRepository` will question the `Resolver` if there is any version higher than the one fetched from cache that also complies with the endpoint target. Some considerations:
     - This step is ignored in case a flag like `offline` is passed.
@@ -104,7 +104,7 @@ Here's an overview of the dependency resolve process:
 
 9. **RETURN PACKAGE TO MANAGER** - The `PackageRepository` returns the canonical dir to the `Manager`.
 
-10. **EVALUATE RESOLVED PACKAGE DEPENDENCIES** - The `Manager` checks if the returned canonical dirs have a `bower.json` file describing additional dependencies and, if so, continue in point #3. If there are no more unresolved dependencies, finish up the installation procedure.
+10. **EVALUATE RESOLVED PACKAGE DEPENDENCIES** - The `Manager` checks if the returned canonical dirs have a `bower.json` file describing additional dependencies and, if so, continue at point #3. If there are no more unresolved dependencies, finish up the installation procedure.
 
 -----
 
@@ -120,7 +120,7 @@ Main resolve coordinator.
 
 `Manager(config, logger)`
 
-The `config` to be used.   
+The `config` to be used.
 The `logger` to print logs to.
 
 ##### Public methods
@@ -135,13 +135,13 @@ Configures the manager. Setup is an object with:
 - `incompatibles`: array of decomposed endpoints that are known to be incompatible
 - `resolutions`: object of resolutions to be used on conflicts
 
-By default, `resolved` packages are also interpreted as installed.   
-When a package is resolved, all its associated incompatible packages will also be fetched.   
+By default, `resolved` packages are also interpreted as installed.
+When a package is resolved, all its associated incompatible packages will also be fetched.
 
 All decomposed endpoints might contain a `dependants` key that will be used to display additional information
-on conflicts.    
+on conflicts.
 The `resolved` endpoints should contain the `package meta` and `canonical dir` information set.
-An additional `unresolvable` key with a true value will cause a conflict to occur even if a resolution is set.   
+An additional `unresolvable` key with a true value will cause a conflict to occur even if a resolution is set.
 The `resolutions` object will be updated as necessary.
 
 If the Manager is already working, the promise is immediately rejected.
@@ -175,23 +175,23 @@ Abstraction to the underlying complexity of heterogeneous source types
 
 `PackageRepository(config, logger)`
 
-The `config` to be used.   
+The `config` to be used.
 The `logger` to print logs to.
 
 ##### Public methods
 
 `PackageRepository#fetch(decEndpoint)`: Promise
 
-Fetches and endpoint, returning a promise of a `canonical dir`.
+Fetches an endpoint, returning a promise of a `canonical dir`.
 
 `PackageRepository#versions(source)`: Promise
 
-Retrieves the semver versions available for a given `source`.   
+Retrieves the semver versions available for a given `source`.
 Return a promise of an array of semver versions.
 
 `PackageRepository#eliminate(source, version)`: Promise
 
-Eliminates entry with given `source` and `version` from the repository.   
+Eliminates entry with given `source` and `version` from the repository.
 Note that `version` can be empty because some `canonical dir`s do not have a version associated.
 In that case, only the unversioned entry will be removed.
 
@@ -201,7 +201,7 @@ Clears the entire repository.
 
 `PackageRepository#list()`: Promise
 
-List the entries of the cache.   
+List the entries of the cache.
 Return a promise of an array of `package meta`s.
 
 
@@ -213,8 +213,8 @@ Simple function that takes a `decomposed endpoint` and creates an instance of a 
 function createResolver(decEndpoint, registryClient, config) -> Promise
 ```
 
-The function is async to allow querying the Bower registry, etc.   
-The `registryClient` is an instance of [RegistryClient](https://github.com/bower/registry-client) to be used. If null, the registry won't be queried.   
+The function is async to allow querying the Bower registry, etc.
+The `registryClient` is an instance of [RegistryClient](https://github.com/bower/registry-client) to be used. If null, the registry won't be queried.
 
 
 #### ResolveCache
@@ -231,22 +231,22 @@ The cache, stored in disk, of resolved packages (canonical dirs).
 
 `ResolveCache#retrieve(source, target)`: Promise
 
-Retrieves `canonical dir` for a given `source` and `target` (optional, defaults to `*`).   
+Retrieves `canonical dir` for a given `source` and `target` (optional, defaults to `*`).
 The promise is resolved with both the `canonical dir` and `package meta`.
 
 `ResolveCache#versions(source)`: Promise
 
-Retrieves the semver versions available for a given `source`.   
+Retrieves the semver versions available for a given `source`.
 Return a promise of an array of semver versions.
 
 `ResolveCache#store(canonicalPackage, pkgMeta)`: Promise
 
-Stores `canonical dir` into the cache.   
+Stores `canonical dir` into the cache.
 The `pkgMeta` is optional and will be read if not passed.
 
 `ResolveCache#eliminate(source, version)`: Promise
 
-Eliminates entry with given `source` and `version` from the cache.   
+Eliminates entry with given `source` and `version` from the cache.
 Note that `version` can be empty because some `canonical dir`s do not have a version associated.
 In that case, only the unversioned entry will be removed.
 
@@ -256,7 +256,7 @@ Clear the entire cache.
 
 `ResolveCache#list()`: Promise
 
-List the entries of the cache.   
+List the entries of the cache.
 Return a promise of an array of `package meta`s.
 
 
@@ -337,8 +337,8 @@ Throws an error if the resolver is not yet resolved.
 
 `Resolver#versions(source)`: Promise
 
-Retrieves the semver versions available for a given `source`.   
-Return a promise of an array of semver versions.   
+Retrieves the semver versions available for a given `source`.
+Return a promise of an array of semver versions.
 By default this function resolves to an empty array.
 
 `Resolver#clearRuntimeCache()`
@@ -354,7 +354,7 @@ By default this function is a no-op.
 
 `Resolver#_hasNew(pkgMeta, canonicalDir)`: Promise
 
-The process of checking for a newer version. This function should be as fast as possible.  
+The process of checking for a newer version. This function should be as fast as possible.
 Concrete resolvers are encouraged to rewrite this function since the default implementation resolves to `true`.
 
 `Resolver#_createTempDir()`: Promise
@@ -400,4 +400,4 @@ The following resolvers will extend from `Resolver.js` and obey its interface.
 
 The `ResolverFactory` knows these types, and is able to fabricate suitable resolvers based on the source type.
 
-This architecture makes it very easy for the community to create others package types, for instance, a `MercurialFsResolver`, `MercurialResolver`, `SvnResolver`, etc.
+This architecture makes it very easy for the community to create other package types, for instance, a `MercurialFsResolver`, `MercurialResolver`, `SvnResolver`, etc.
